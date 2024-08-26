@@ -74,11 +74,14 @@ impl eframe::App for MyApp {
             tabs.push("TabC".to_string());
 
             ui.add(TabBar::new(tabs, &mut self.selected_tab2, &ui.visuals())
-                .selected_bg(Color32::LIGHT_BLUE)
-                .selected_fg(Color32::DARK_BLUE)
+                .selected_bg(Color32::from_rgb(254,250,238))
+                .selected_fg(Color32::BLACK)
+                .hover_bg(Color32::from_rgb(218, 207, 181))
+                .hover_fg(Color32::BLACK)
+                .bg(Color32::from_rgb(226, 221, 213))
+                .fg(Color32::DARK_GRAY)
                 .heading(self.heading)
                 .underline(self.underline)
-
             );
             match self.selected_tab2 {
                 0 => { ui.colored_label(Color32::RED, "Content for TabA"); }

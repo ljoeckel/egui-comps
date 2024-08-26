@@ -31,7 +31,7 @@ impl<'a> TabBar<'a> {
             selected_fg: visuals.selection.stroke.color,
             hover_bg: visuals.widgets.hovered.bg_fill,
             hover_fg: visuals.widgets.hovered.fg_stroke.color,
-            bg: visuals.faint_bg_color,
+            bg: visuals.code_bg_color,
             fg: visuals.widgets.active.fg_stroke.color,
             stroke_bg: Color32::from_rgb(170, 170, 170),
             underline: false,
@@ -122,9 +122,7 @@ impl<'a> Widget for TabBar<'a>
         for (ind, header) in self.cols.iter().enumerate() {
             // Paint the rectangle while preserving the stroke lines
             if ind == 0 { rect.set_left(rect.left() + 1.0) }
-            if ind == self.cols.len() - 1 {
-                rect.set_width(rect.width() - 1.0);
-            }
+            if ind == self.cols.len() - 1 {rect.set_width(rect.width() - 1.0);}
 
             let mut child_ui = ui.child_ui(rect, self.layout, None);
 
