@@ -1,7 +1,7 @@
 use eframe::egui;
 use eframe::emath::Align;
 use eframe::epaint::Color32;
-use egui::{Layout};
+use egui::Layout;
 
 use egui_comps::tabbar::*;
 
@@ -13,9 +13,7 @@ fn main() -> eframe::Result {
     eframe::run_native(
         "TabBar Example",
         options,
-        Box::new(|_cc| {
-            Ok(Box::<MyApp>::default())
-        }),
+        Box::new(|_cc| Ok(Box::<MyApp>::default())),
     )
 }
 
@@ -51,14 +49,24 @@ impl eframe::App for MyApp {
             });
 
             // Add the first TabBar
-            if ui.add(TabBar::new(tabs, &mut self.selected_tab, &ui.visuals())).clicked() {
+            if ui
+                .add(TabBar::new(tabs, &mut self.selected_tab, &ui.visuals()))
+                .clicked()
+            {
                 println!("clicked tab={}", self.selected_tab);
             }
+
             match self.selected_tab {
-                0 => { ui.colored_label(Color32::RED, "Content for Tab0"); }
-                1 => { ui.colored_label(Color32::BLUE, "Content for Tab1"); }
-                2 => { ui.colored_label(Color32::GREEN, "Content for Tab2"); }
-                _ => ()
+                0 => {
+                    ui.colored_label(Color32::RED, "Content for Tab0");
+                }
+                1 => {
+                    ui.colored_label(Color32::BLUE, "Content for Tab1");
+                }
+                2 => {
+                    ui.colored_label(Color32::GREEN, "Content for Tab2");
+                }
+                _ => (),
             }
 
             ui.add_space(20.0);
@@ -73,23 +81,38 @@ impl eframe::App for MyApp {
             tabs.push("TabB".to_string());
             tabs.push("TabC".to_string());
 
-            ui.add(TabBar::new(tabs, &mut self.selected_tab2, &ui.visuals())
-                .selected_bg(Color32::from_rgb(0xf6, 0xb1, 0x7a), Color32::from_rgb(0x6e, 0x85, 0xb7))
-                .selected_fg(Color32::BLACK, Color32::WHITE)
-                .hover_bg(Color32::from_rgb(0x70, 0x77, 0xa1), Color32::from_rgb(218, 207, 181))
-                .hover_fg(Color32::WHITE, Color32::BLACK)
-                .bg(Color32::from_rgb(0x42, 0x47, 0x69), Color32::from_rgb(226, 221, 213))
-                .fg(Color32::LIGHT_GRAY, Color32::DARK_GRAY)
-                .heading(self.heading)
-                .underline(self.underline)
+            ui.add(
+                TabBar::new(tabs, &mut self.selected_tab2, &ui.visuals())
+                    .selected_bg(
+                        Color32::from_rgb(0xf6, 0xb1, 0x7a),
+                        Color32::from_rgb(0x6e, 0x85, 0xb7),
+                    )
+                    .selected_fg(Color32::BLACK, Color32::WHITE)
+                    .hover_bg(
+                        Color32::from_rgb(0x70, 0x77, 0xa1),
+                        Color32::from_rgb(218, 207, 181),
+                    )
+                    .hover_fg(Color32::WHITE, Color32::BLACK)
+                    .bg(
+                        Color32::from_rgb(0x42, 0x47, 0x69),
+                        Color32::from_rgb(226, 221, 213),
+                    )
+                    .fg(Color32::LIGHT_GRAY, Color32::DARK_GRAY)
+                    .heading(self.heading)
+                    .underline(self.underline),
             );
             match self.selected_tab2 {
-                0 => { ui.colored_label(Color32::RED, "Content for TabA"); }
-                1 => { ui.colored_label(Color32::BLUE, "Content for TabB"); }
-                2 => { ui.colored_label(Color32::GREEN, "Content for TabC"); }
-                _ => ()
+                0 => {
+                    ui.colored_label(Color32::RED, "Content for TabA");
+                }
+                1 => {
+                    ui.colored_label(Color32::BLUE, "Content for TabB");
+                }
+                2 => {
+                    ui.colored_label(Color32::GREEN, "Content for TabC");
+                }
+                _ => (),
             }
         });
     }
 }
-
