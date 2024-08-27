@@ -165,13 +165,14 @@ impl<'a> Widget for TabBar<'a>
 
                 // paint stroke and round tab
                 r.set_top(r.top() - 3.0);
+                r.set_height(height + 1.0);
                 ui.painter().rect_stroke(r, 3.0, (1.0, get_color(dark_mode, hover_fg)));
-                //r.set_top(r.top() + 1.0);
-                r.set_bottom(r.bottom() + 1.0);
                 ui.painter().rect_filled(r, 3.0, get_color(dark_mode, selected_bg));
 
                 // paint lower rect without rounding
                 r.set_top(r.top() + 4.0);
+                r.set_height(height - 3.0);
+
                 ui.painter().rect_filled(r, 0.0, get_color(dark_mode, selected_bg));
                 fg_color = get_color(dark_mode, selected_fg);
             } else if hovered {
