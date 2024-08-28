@@ -14,7 +14,7 @@ fn get_color(dark_mode: bool, colors: (Color32, Color32)) -> Color32 {
 
 pub struct TabBar<'a> {
     selected: &'a mut usize,
-    cols: Vec<&'a str>,
+    cols: Vec<String>,
     height: f32,
     sense: Sense,
     layout: Layout,
@@ -30,7 +30,7 @@ pub struct TabBar<'a> {
 }
 impl<'a> TabBar<'a> {
     pub fn new(
-        cols: Vec<&'a str>,
+        cols: Vec<String>,
         selected: &'a mut usize,
         visuals: &eframe::egui::Visuals,
     ) -> Self {

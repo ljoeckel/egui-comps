@@ -1,8 +1,7 @@
 use eframe::egui;
 use eframe::emath::Align;
 use eframe::epaint::Color32;
-use egui::Layout;
-
+use egui::{Layout};
 use egui_comps::tabbar::*;
 
 fn main() -> eframe::Result {
@@ -22,6 +21,7 @@ struct MyApp {
     selected_tab2: usize,
     underline: bool,
     heading: bool,
+    clicks: usize,
 }
 impl Default for MyApp {
     fn default() -> Self {
@@ -30,6 +30,7 @@ impl Default for MyApp {
             selected_tab2: 0,
             underline: false,
             heading: false,
+            clicks: 0,
         }
     }
 }
@@ -44,12 +45,17 @@ impl eframe::App for MyApp {
             });
 
             // Add the first TabBar
-            let tabs = vec!{"Tab0", "Tab1", "Tab2"};
+            let tabs = vec! {
+                "Tab0".to_string(),
+                "Tab1".to_string(),
+                "Tab2".to_string()
+            };
             if ui
                 .add(TabBar::new(tabs, &mut self.selected_tab, &ui.visuals()))
                 .clicked()
             {
                 println!("clicked tab={}", self.selected_tab);
+                self.clicks += 1;
             }
 
             match self.selected_tab {
@@ -71,8 +77,13 @@ impl eframe::App for MyApp {
             ui.checkbox(&mut self.heading, "heading");
             ui.add_space(10.0);
 
-            // Add another TabBar
-            let tabs = vec!{"TabA", "TabB", "TabC"};
+            // Add another TabBar and show the number of clicks from the first tabbar
+            let tabs = vec! {
+                format!("TabA {}", self.clicks),
+                format!("TabB {}", self.clicks * 2),
+                format!("TabC {}", self.clicks * 10),
+            };
+
             ui.add(
                 TabBar::new(tabs, &mut self.selected_tab2, &ui.visuals())
                     .selected_bg(
