@@ -14,7 +14,7 @@ fn get_color(dark_mode: bool, colors: (Color32, Color32)) -> Color32 {
 
 pub struct TabBar<'a> {
     selected: &'a mut usize,
-    cols: Vec<String>,
+    cols: Vec<&'a str>,
     height: f32,
     sense: Sense,
     layout: Layout,
@@ -30,7 +30,7 @@ pub struct TabBar<'a> {
 }
 impl<'a> TabBar<'a> {
     pub fn new(
-        cols: Vec<String>,
+        cols: Vec<&'a str>,
         selected: &'a mut usize,
         visuals: &eframe::egui::Visuals,
     ) -> Self {
@@ -214,18 +214,19 @@ impl<'a> Widget for TabBar<'a> {
             };
 
             let rt;
+            let hdr = header.to_string();
             if *selected == ind {
                 if underline && heading {
-                    rt = RichText::new(header).color(fg_color).underline().heading();
+                    rt = RichText::new(hdr).color(fg_color).underline().heading();
                 } else if heading {
-                    rt = RichText::new(header).color(fg_color).heading();
+                    rt = RichText::new(hdr).color(fg_color).heading();
                 } else if underline {
-                    rt = RichText::new(header).color(fg_color).underline();
+                    rt = RichText::new(hdr).color(fg_color).underline();
                 } else {
-                    rt = RichText::new(header).color(fg_color);
+                    rt = RichText::new(hdr).color(fg_color);
                 }
             } else {
-                rt = RichText::new(header).color(fg_color);
+                rt = RichText::new(hdr).color(fg_color);
             }
             child_ui.add(Label::new(rt).selectable(false));
 

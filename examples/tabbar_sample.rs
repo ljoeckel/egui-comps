@@ -35,11 +35,6 @@ impl Default for MyApp {
 }
 impl eframe::App for MyApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        let mut tabs: Vec<String> = Vec::new();
-        tabs.push("Tab0".to_string());
-        tabs.push("Tab1".to_string());
-        tabs.push("Tab2".to_string());
-
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.horizontal(|ui| {
                 ui.heading("TabBar Example");
@@ -49,6 +44,7 @@ impl eframe::App for MyApp {
             });
 
             // Add the first TabBar
+            let tabs = vec!{"Tab0", "Tab1", "Tab2"};
             if ui
                 .add(TabBar::new(tabs, &mut self.selected_tab, &ui.visuals()))
                 .clicked()
@@ -76,11 +72,7 @@ impl eframe::App for MyApp {
             ui.add_space(10.0);
 
             // Add another TabBar
-            let mut tabs: Vec<String> = Vec::new();
-            tabs.push("TabA".to_string());
-            tabs.push("TabB".to_string());
-            tabs.push("TabC".to_string());
-
+            let tabs = vec!{"TabA", "TabB", "TabC"};
             ui.add(
                 TabBar::new(tabs, &mut self.selected_tab2, &ui.visuals())
                     .selected_bg(
