@@ -1,5 +1,5 @@
 use eframe::egui::{
-    vec2, Color32, CursorIcon, Direction, Label, Layout, Response, RichText, Sense, Ui, Widget,
+    vec2, Color32, CursorIcon, Direction, Label, Layout, Response, RichText, Sense, Ui, Widget, Rounding
 };
 
 fn get_color(dark_mode: bool, colors: (Color32, Color32)) -> Color32 {
@@ -11,7 +11,6 @@ fn get_color(dark_mode: bool, colors: (Color32, Color32)) -> Color32 {
 }
 
 #[must_use = "You should put this widget in an ui with `ui.add(widget);`"]
-
 pub struct TabBar<'a> {
     selected: &'a mut usize,
     cols: Vec<String>,
@@ -41,27 +40,12 @@ impl<'a> TabBar<'a> {
             sense: Sense::click(),
             layout: Layout::centered_and_justified(Direction::LeftToRight),
             selected_bg: (visuals.selection.bg_fill, visuals.selection.bg_fill),
-            selected_fg: (
-                visuals.selection.stroke.color,
-                visuals.selection.stroke.color,
-            ),
-            hover_bg: (
-                visuals.widgets.hovered.bg_fill,
-                visuals.widgets.hovered.bg_fill,
-            ),
-            hover_fg: (
-                visuals.widgets.hovered.fg_stroke.color,
-                visuals.widgets.hovered.fg_stroke.color,
-            ),
+            selected_fg: (visuals.selection.stroke.color, visuals.selection.stroke.color),
+            hover_bg: (visuals.widgets.hovered.bg_fill, visuals.widgets.hovered.bg_fill),
+            hover_fg: (visuals.widgets.hovered.fg_stroke.color, visuals.widgets.hovered.fg_stroke.color),
             bg: (visuals.code_bg_color, visuals.code_bg_color),
-            fg: (
-                visuals.widgets.active.fg_stroke.color,
-                visuals.widgets.active.fg_stroke.color,
-            ),
-            stroke_bg: (
-                Color32::from_rgb(170, 170, 170),
-                Color32::from_rgb(170, 170, 170),
-            ),
+            fg: (visuals.widgets.active.fg_stroke.color, visuals.widgets.active.fg_stroke.color),
+            stroke_bg: (Color32::from_rgb(170, 170, 170), Color32::from_rgb(170, 170, 170)),
             underline: false,
             heading: false,
         }
@@ -154,8 +138,7 @@ impl<'a> Widget for TabBar<'a> {
         rect.set_height(height);
         let mut response = ui.allocate_rect(rect, sense);
 
-        ui.painter()
-            .rect_filled(rect, 0.0, get_color(dark_mode, stroke_bg));
+        ui.painter().rect_filled(rect, 0.0, get_color(dark_mode, stroke_bg));
         rect.set_height(height - 1.0);
         rect.set_top(rect.top() + 1.0);
         let cell_width = rect.width() / cols.len() as f32;
@@ -163,7 +146,7 @@ impl<'a> Widget for TabBar<'a> {
 
         let mut fg_color: Color32;
         for (ind, header) in cols.iter().enumerate() {
-            // Paint the rectangle while preserving the stroke lines
+            // Preserve the vertical stroke lines on the first/last tab
             if ind == 0 {
                 rect.set_left(rect.left() + 1.0)
             }
@@ -185,31 +168,26 @@ impl<'a> Widget for TabBar<'a> {
 
             if *selected == ind {
                 let mut r = rect.clone();
-
-                // paint stroke and round tab
                 r.set_top(r.top() - 3.0);
                 r.set_height(height + 1.0);
-                ui.painter()
-                    .rect_stroke(r, 3.0, (1.0, get_color(dark_mode, hover_fg)));
-                ui.painter()
-                    .rect_filled(r, 3.0, get_color(dark_mode, selected_bg));
 
-                // paint lower rect without rounding
-                r.set_top(r.top() + 4.0);
-                r.set_height(height - 3.0);
+                let mut rounding = Rounding::from(3.0);
+                rounding.se = 0.0;
+                rounding.sw = 0.0;
 
-                ui.painter()
-                    .rect_filled(r, 0.0, get_color(dark_mode, selected_bg));
+                ui.painter().rect_stroke(r, rounding, (1.0, get_color(dark_mode, hover_fg)));
+                ui.painter().rect_filled(r, rounding, get_color(dark_mode, selected_bg));
+
                 fg_color = get_color(dark_mode, selected_fg);
             } else if hovered {
                 ui.ctx().set_cursor_icon(CursorIcon::PointingHand);
-                ui.painter()
-                    .rect_filled(rect, 0.0, get_color(dark_mode, hover_bg));
+                ui.painter().rect_filled(rect, 0.0, get_color(dark_mode, hover_bg));
+
                 fg_color = get_color(dark_mode, hover_fg);
+
                 response = resp.clone();
             } else {
-                ui.painter()
-                    .rect_filled(rect, 0.0, get_color(dark_mode, bg));
+                ui.painter().rect_filled(rect, 0.0, get_color(dark_mode, bg));
                 fg_color = get_color(dark_mode, fg);
             };
 
@@ -232,6 +210,7 @@ impl<'a> Widget for TabBar<'a> {
 
             rect = rect.translate(vec2(cell_width, 0.0));
         }
+
         response
     }
 }
