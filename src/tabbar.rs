@@ -176,6 +176,7 @@ impl<'a> Widget for TabBar<'a> {
                 rounding.sw = 0.0;
 
                 ui.painter().rect_stroke(r, rounding, (1.0, get_color(dark_mode, hover_fg)));
+                r.set_height(r.height() + 1.0);
                 ui.painter().rect_filled(r, rounding, get_color(dark_mode, selected_bg));
 
                 fg_color = get_color(dark_mode, selected_fg);
